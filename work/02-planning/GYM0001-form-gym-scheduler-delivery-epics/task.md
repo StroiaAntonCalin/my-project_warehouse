@@ -6,7 +6,19 @@ status  = "02-planning"
 
 [sources]
 epic      = "../../../explore/prds/gym-scheduler-prd.md"
-documents = ["../../../explore/hlds/gym-scheduler-hld.md", "../../../explore/explore-gym-scheduler/test-strategy.md", "../../../explore/explore-gym-scheduler/devops-strategy.md", "../../../explore/explore-gym-scheduler/risks.md", "../../../explore/glossary.md"]
+documents = [
+    "../../../explore/hlds/gym-scheduler-hld.md",
+    "../../../explore/explore-gym-scheduler/test-strategy.md",
+    "../../../explore/explore-gym-scheduler/devops-strategy.md",
+    "../../../explore/explore-gym-scheduler/risks.md",
+    "../../../explore/glossary.md",
+    "../../../explore/decisions/gym-scheduler-adr-001-modular-monolith.md",
+    "../../../explore/decisions/gym-scheduler-adr-002-json-repository.md",
+    "../../../explore/decisions/gym-scheduler-adr-003-typed-rest-client.md",
+    "../../../explore/decisions/gym-scheduler-adr-004-secure-session.md",
+    "../../../explore/hlds/gym-scheduler-boundary-map.md",
+    "../../../explore/epics/README.md"
+]
 
 [links]
 blocks  = []
