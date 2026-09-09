@@ -36,6 +36,11 @@ export class AuthService {
 
   logout(token: string | undefined) { if (token) this.sessions.delete(this.hash(token)); }
 
+  verifyAccessToken(token: string) {
+    try { return jwt.verify(token, this.secret) as { sub: string; role: string }; }
+    catch { throw new UnauthorizedException('Invalid access token'); }
+  }
+
   private issueSession(user: User) {
     const accessToken = jwt.sign({ sub: user.id, role: user.role }, this.secret, { expiresIn: '15m' });
     const refreshToken = randomBytes(32).toString('hex');

@@ -5,12 +5,16 @@ title   = "Implement GYM_SCHEDULER authenticated weekly schedule board"
 status  = "01-pending-planning"
 
 [sources]
-epic      = ""
-documents = []
+epic      = "../../../../explore/epics/EPIC-GYM-002-weekly-schedule-board.md"
+documents = [
+    "../../../../explore/hlds/gym-scheduler-hld.md",
+    "../../../../explore/decisions/gym-scheduler-adr-003-typed-rest-client.md",
+    "../../../../work/06-completed/GYM0003-implement-gym-scheduler-seeded-authentication-and/task.md"
+]
 
 [links]
 blocks  = []
-related = []
+related = ["../../../../work/06-completed/GYM0003-implement-gym-scheduler-seeded-authentication-and/task.md"]
 parent  = []
 child   = []
 
@@ -29,50 +33,26 @@ implementation = ""
 
 **Task ID**: GYM0004
 **Status**: 01-pending-planning
-**Phase**: flow
-**Date**: 2026-09-09
-**Branch**: impl/GYM0004-implement-gym-scheduler-authenticated-weekly-sched
 
 ## Problem Statement
 
-<Brief description of what problem this task solves and why it matters.>
+Authentication exists, but the authenticated member cannot load or see their weekly schedule. Connect the frontend to the protected schedule API and render exactly seven editable day cards as the core product experience.
 
 ## Goals & Acceptance Criteria
 
-### Goals
-
-<Clear, high-level objectives this task aims to achieve.>
-
-### Acceptance Criteria
-
-- [ ] <Acceptance criterion 1>
-- [ ] <Acceptance criterion 2>
+- [ ] Authenticated users can load their single schedule from `GET /api/v1/schedules/me`.
+- [ ] The API derives schedule ownership from the verified JWT identity.
+- [ ] The frontend provides login, loading, error, logout, and authenticated board states.
+- [ ] The board renders exactly seven ordered weekday cards, including empty days.
+- [ ] Access tokens remain in memory and refresh cookies are sent by the browser.
 
 ## Non-Goals
 
-- <Non-goal 1>
-
-## Context & References
-
-### Source Material
-
-- <Source document> — <Relevance>
-
-### Related Tasks
-
-- **Blocks**: <tasks this blocks>
-- **Related**: <related tasks>
+- Exercise add/edit/remove mutations; those belong to the next task.
+- Registration, multiple schedules, collaboration, or deployment.
 
 ## Constraints & Dependencies
 
-- <Constraint or dependency>
+- Build on the merged GYM0003 authentication implementation and JSON repository.
+- Preserve the seven-day domain invariant and typed REST boundary.
 
-## Success Metrics
-
-- <How success will be measured>
-
-## Notes
-
----
-
-**Implementation Note**: This task definition captures requirements and acceptance criteria only. Technical implementation details belong in `plan.md`, created during the planning phase.

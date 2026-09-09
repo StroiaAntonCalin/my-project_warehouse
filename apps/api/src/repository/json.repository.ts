@@ -24,5 +24,6 @@ export class JsonRepository {
   scheduleCount() { return this.data.schedules.length; }
   findUser(username: string) { return this.data.users.find((user) => user.username === username); }
   findUserById(id: string) { return this.data.users.find((user) => user.id === id); }
+  findScheduleByUserId(userId: string) { return this.data.schedules.find((schedule) => schedule.userId === userId); }
   snapshot() { return this.data; }
 }
