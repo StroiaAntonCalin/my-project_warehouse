@@ -2,7 +2,7 @@
 [metadata]
 task_id = "GYM0003"
 title   = "Implement GYM_SCHEDULER seeded authentication and sessions"
-status  = "01-pending-planning"
+status  = "06-completed"
 
 [sources]
 epic      = "../../../../explore/epics/EPIC-GYM-001-authentication-session.md"
