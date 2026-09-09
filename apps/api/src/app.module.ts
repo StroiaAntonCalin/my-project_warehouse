@@ -5,6 +5,7 @@ import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { ScheduleController } from './schedule/schedule.controller';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { ExerciseController } from './schedule/exercise.controller';
 
-@Module({ controllers: [HealthController, AuthController, ScheduleController], providers: [JsonRepository, AuthService, JwtAuthGuard], exports: [JsonRepository, AuthService, JwtAuthGuard] })
+@Module({ controllers: [HealthController, AuthController, ScheduleController, ExerciseController], providers: [JsonRepository, AuthService, JwtAuthGuard], exports: [JsonRepository, AuthService, JwtAuthGuard] })
 export class AppModule {}

@@ -5,12 +5,16 @@ title   = "Implement GYM_SCHEDULER exercise management"
 status  = "01-pending-planning"
 
 [sources]
-epic      = ""
-documents = []
+epic      = "../../../../explore/epics/EPIC-GYM-003-exercise-management.md"
+documents = [
+    "../../../../explore/hlds/gym-scheduler-hld.md",
+    "../../../../explore/explore-gym-scheduler/test-strategy.md",
+    "../../../../work/06-completed/GYM0004-implement-gym-scheduler-authenticated-weekly-sched/task.md"
+]
 
 [links]
 blocks  = []
-related = []
+related = ["../../../../work/06-completed/GYM0004-implement-gym-scheduler-authenticated-weekly-sched/task.md"]
 parent  = []
 child   = []
 
@@ -27,52 +31,24 @@ implementation = ""
 
 # Task: Implement GYM_SCHEDULER exercise management
 
-**Task ID**: GYM0005
-**Status**: 01-pending-planning
-**Phase**: flow
-**Date**: 2026-09-09
-**Branch**: impl/GYM0005-implement-gym-scheduler-exercise-management
-
 ## Problem Statement
 
-<Brief description of what problem this task solves and why it matters.>
+The weekly board shows seven days, but members cannot yet add or maintain exercises. Add authenticated exercise CRUD with simple validation and explicit ordering, then connect it to each day card.
 
 ## Goals & Acceptance Criteria
 
-### Goals
-
-<Clear, high-level objectives this task aims to achieve.>
-
-### Acceptance Criteria
-
-- [ ] <Acceptance criterion 1>
-- [ ] <Acceptance criterion 2>
+- [ ] Authenticated members can add, edit, remove, and reorder exercises on their own days.
+- [ ] Exercise name is required; optional fields are validated when supplied.
+- [ ] Mutations persist to the JSON mock data and appear after reload.
+- [ ] A member cannot mutate another member's schedule.
+- [ ] The UI provides a simple exercise form and delete action on each day card.
 
 ## Non-Goals
 
-- <Non-goal 1>
-
-## Context & References
-
-### Source Material
-
-- <Source document> — <Relevance>
-
-### Related Tasks
-
-- **Blocks**: <tasks this blocks>
-- **Related**: <related tasks>
+- Workout completion analytics, sharing, coach administration, or production persistence.
 
 ## Constraints & Dependencies
 
-- <Constraint or dependency>
+- Build on the merged authenticated schedule board.
+- Preserve explicit numeric `order` fields and exactly seven days.
 
-## Success Metrics
-
-- <How success will be measured>
-
-## Notes
-
----
-
-**Implementation Note**: This task definition captures requirements and acceptance criteria only. Technical implementation details belong in `plan.md`, created during the planning phase.

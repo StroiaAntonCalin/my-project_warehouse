@@ -13,6 +13,7 @@ function App() {
   const [password, setPassword] = useState('demo123');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [drafts, setDrafts] = useState<Record<number, string>>({});
 
   async function login(event: FormEvent) {
     event.preventDefault(); setLoading(true); setError('');
@@ -28,10 +29,21 @@ function App() {
   }
 
   async function logout() { await fetch(`${api}/auth/logout`, { method: 'POST', credentials: 'include' }); accessToken = undefined; setSchedule(null); }
+  async function addExercise(dayOrder: number) {
+    const name = drafts[dayOrder]?.trim(); if (!name || !accessToken) return;
+    const response = await fetch(`${api}/schedules/me/days/${dayOrder}/exercises`, { method: 'POST', credentials: 'include', headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ name }) });
+    if (!response.ok) { setError('Could not add exercise'); return; }
+    const exercise = await response.json(); setSchedule((current) => { if (!current) return current; const days = current.days.map((day) => day.order === dayOrder ? { ...day, exercises: [...day.exercises, exercise] } : day) as Schedule['days']; return { ...current, days }; }); setDrafts((current) => ({ ...current, [dayOrder]: '' }));
+  }
+  async function removeExercise(dayOrder: number, exerciseId: string) {
+    if (!accessToken) return;
+    await fetch(`${api}/schedules/me/days/${dayOrder}/exercises/${exerciseId}`, { method: 'DELETE', credentials: 'include', headers: { Authorization: `Bearer ${accessToken}` } });
+    setSchedule((current) => { if (!current) return current; const days = current.days.map((day) => day.order === dayOrder ? { ...day, exercises: day.exercises.filter((exercise) => exercise.id !== exerciseId).map((exercise, index) => ({ ...exercise, order: index + 1 })) } : day) as Schedule['days']; return { ...current, days }; });
+  }
 
   if (!schedule) return <main className="shell auth-shell"><header><p className="eyebrow">GYM_SCHEDULER</p><h1>Plan your strongest week.</h1><p className="intro">Sign in to open your personal seven-day schedule.</p></header><form className="login-form" onSubmit={login}><label>Email<input value={username} onChange={(event) => setUsername(event.target.value)} /></label><label>Password<input type="password" value={password} onChange={(event) => setPassword(event.target.value)} /></label>{error && <p className="error" role="alert">{error}</p>}<button type="submit" disabled={loading}>{loading ? 'Opening…' : 'Open schedule'}</button></form></main>;
 
-  return <main className="shell"><header className="board-header"><div><p className="eyebrow">GYM_SCHEDULER / THIS WEEK</p><h1>Your weekly rhythm.</h1><p className="intro">A simple space to plan the work that keeps you moving.</p></div><button className="logout" type="button" onClick={logout}>Log out</button></header><section className="board" aria-label="Weekly gym schedule">{schedule.days.map((day) => <article className="day-card" key={day.id}><div><span className="day-number">0{day.order}</span><h2>{day.dayOfWeek}</h2></div><p className="empty">{day.exercises.length ? `${day.exercises.length} exercises` : 'No exercises yet'}</p><button type="button">+ Add exercise</button></article>)}</section></main>;
+  return <main className="shell"><header className="board-header"><div><p className="eyebrow">GYM_SCHEDULER / THIS WEEK</p><h1>Your weekly rhythm.</h1><p className="intro">A simple space to plan the work that keeps you moving.</p></div><button className="logout" type="button" onClick={logout}>Log out</button></header><section className="board" aria-label="Weekly gym schedule">{schedule.days.map((day) => <article className="day-card" key={day.id}><div><span className="day-number">0{day.order}</span><h2>{day.dayOfWeek}</h2></div><div className="exercise-list">{day.exercises.map((exercise) => <div className="exercise" key={exercise.id}><span>{exercise.order}. {exercise.name}</span><button className="remove" type="button" onClick={() => removeExercise(day.order, exercise.id)} aria-label={`Remove ${exercise.name}`}>×</button></div>)}</div><div className="exercise-add"><input aria-label={`Exercise for ${day.dayOfWeek}`} placeholder="Exercise name" value={drafts[day.order] ?? ''} onChange={(event) => setDrafts((current) => ({ ...current, [day.order]: event.target.value }))} /><button type="button" onClick={() => addExercise(day.order)}>Add</button></div></article>)}</section></main>;
 }
 
 createRoot(document.getElementById('root')!).render(<StrictMode><App /></StrictMode>);
