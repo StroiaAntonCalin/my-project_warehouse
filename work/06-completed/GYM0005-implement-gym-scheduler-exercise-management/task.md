@@ -2,7 +2,7 @@
 [metadata]
 task_id = "GYM0005"
 title   = "Implement GYM_SCHEDULER exercise management"
-status  = "01-pending-planning"
+status  = "06-completed"
 
 [sources]
 epic      = "../../../../explore/epics/EPIC-GYM-003-exercise-management.md"
