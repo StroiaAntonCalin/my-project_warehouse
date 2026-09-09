@@ -16,6 +16,13 @@ export class AuthController {
     return { accessToken: result.accessToken };
   }
 
+  @Post('register')
+  register(@Body() body: { username?: string; password?: string }, @Res({ passthrough: true }) response: Response) {
+    const result = this.auth.register(body.username ?? '', body.password ?? '');
+    response.cookie(cookieName, result.refreshToken, cookieOptions);
+    return { accessToken: result.accessToken };
+  }
+
   @Post('refresh')
   refresh(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
     const result = this.auth.refresh(request.cookies?.[cookieName]);
