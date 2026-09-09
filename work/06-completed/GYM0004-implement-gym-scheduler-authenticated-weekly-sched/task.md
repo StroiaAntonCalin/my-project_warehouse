@@ -2,7 +2,7 @@
 [metadata]
 task_id = "GYM0004"
 title   = "Implement GYM_SCHEDULER authenticated weekly schedule board"
-status  = "01-pending-planning"
+status  = "06-completed"
 
 [sources]
 epic      = "../../../../explore/epics/EPIC-GYM-002-weekly-schedule-board.md"
