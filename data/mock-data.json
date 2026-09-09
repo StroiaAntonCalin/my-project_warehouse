@@ -1,0 +1,14 @@
+{
+  "users": [{"id":"user-demo","username":"demo@gym.local","role":"member","passwordHash":"prototype-only"}],
+  "schedules": [{
+    "id":"schedule-demo","userId":"user-demo","days":[
+      {"id":"day-mon","dayOfWeek":"monday","order":1,"exercises":[]},
+      {"id":"day-tue","dayOfWeek":"tuesday","order":2,"exercises":[]},
+      {"id":"day-wed","dayOfWeek":"wednesday","order":3,"exercises":[]},
+      {"id":"day-thu","dayOfWeek":"thursday","order":4,"exercises":[]},
+      {"id":"day-fri","dayOfWeek":"friday","order":5,"exercises":[]},
+      {"id":"day-sat","dayOfWeek":"saturday","order":6,"exercises":[]},
+      {"id":"day-sun","dayOfWeek":"sunday","order":7,"exercises":[]}
+    ]
+  }]
+}
