@@ -2,7 +2,7 @@
 [metadata]
 task_id = "GYM0006"
 title   = "Add GYM_SCHEDULER user registration"
-status  = "01-pending-planning"
+status  = "06-completed"
 
 [sources]
 epic      = ""
