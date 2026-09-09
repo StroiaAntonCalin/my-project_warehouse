@@ -22,5 +22,7 @@ export class JsonRepository {
 
   userCount() { return this.data.users.length; }
   scheduleCount() { return this.data.schedules.length; }
+  findUser(username: string) { return this.data.users.find((user) => user.username === username); }
+  findUserById(id: string) { return this.data.users.find((user) => user.id === id); }
   snapshot() { return this.data; }
 }
