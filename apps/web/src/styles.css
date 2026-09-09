@@ -18,6 +18,12 @@ h1 { font-size: clamp(2.6rem, 7vw, 6.8rem); line-height: .92; letter-spacing: -.
 .day-number { color: #7b8379; font-size: .75rem; }
 h2 { margin: 16px 0; font-size: 1.5rem; }
 .empty { margin-top: auto; color: #858d83; }
+.exercise-list { display: grid; gap: 8px; margin: 8px 0 18px; }
+.exercise { display: flex; justify-content: space-between; gap: 8px; align-items: center; color: #e8eadf; font-size: .9rem; }
+.exercise-add { display: flex; gap: 8px; margin-top: auto; }
+.exercise-add input { min-width: 0; width: 100%; padding: 10px; }
+.exercise-add button { padding: 9px 13px; }
+.remove { padding: 0 7px; color: #ff9f8d; background: transparent; font-size: 1.1rem; }
 button { border: 0; border-radius: 999px; padding: 11px 15px; color: #171a18; background: #b3d64b; font-weight: 800; cursor: pointer; }
 button:hover { background: #c9eb62; }
 @media (max-width: 900px) { .board { grid-template-columns: repeat(2, 1fr); } }
