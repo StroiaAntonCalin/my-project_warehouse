@@ -2,7 +2,7 @@
 [metadata]
 task_id = "GYM0002"
 title   = "Create GYM_SCHEDULER local workspace foundation"
-status  = "01-pending-planning"
+status  = "02-planning"
 
 [sources]
 epic      = "../../../../explore/epics/EPIC-GYM-004-quality-foundation.md"
@@ -24,12 +24,12 @@ child   = []
 
 [workflow]
 defined = "2026-09-09"
-planned = ""
+planned = "2026-09-09"
 implemented = ""
 
 [assignments]
 definition     = ""
-planning       = ""
+planning       = "anton-calin.stroia@endava.com"
 implementation = ""
 +++
 
