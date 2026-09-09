@@ -2,7 +2,7 @@
 [metadata]
 task_id = "GYM0002"
 title   = "Create GYM_SCHEDULER local workspace foundation"
-status  = "02-planning"
+status  = "06-completed"
 
 [sources]
 epic      = "../../../../explore/epics/EPIC-GYM-004-quality-foundation.md"
