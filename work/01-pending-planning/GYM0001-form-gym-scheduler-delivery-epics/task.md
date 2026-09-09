@@ -5,8 +5,8 @@ title   = "Form GYM_SCHEDULER delivery epics"
 status  = "01-pending-planning"
 
 [sources]
-epic      = ""
-documents = []
+epic      = "../../../explore/prds/gym-scheduler-prd.md"
+documents = ["../../../explore/hlds/gym-scheduler-hld.md", "../../../explore/explore-gym-scheduler/test-strategy.md", "../../../explore/explore-gym-scheduler/devops-strategy.md", "../../../explore/explore-gym-scheduler/risks.md", "../../../explore/glossary.md"]
 
 [links]
 blocks  = []
@@ -35,39 +35,62 @@ implementation = ""
 
 ## Problem Statement
 
-<Brief description of what problem this task solves and why it matters.>
+Transform the approved GYM_SCHEDULER product, architecture, quality, and risk artifacts into a small set of delivery epics that Govern can plan and implement.
 
 ## Goals & Acceptance Criteria
 
 ### Goals
 
-<Clear, high-level objectives this task aims to achieve.>
+Create capability-aligned future-state epics without duplicating responsibilities or exceeding practical delivery size.
 
 ### Acceptance Criteria
 
-- [ ] <Acceptance criterion 1>
-- [ ] <Acceptance criterion 2>
+- [ ] Epics cover authentication, weekly schedule, exercise management, persistence/quality, and frontend/backend setup.
+- [ ] Each epic has boundaries, PRD traceability, HLD alignment, acceptance outcomes, and prototype non-goals.
+- [ ] Epic index is updated and Govern readiness passes.
+- [ ] Follow-on implementation tasks can be created without unresolved scope ambiguity.
 
 ## Non-Goals
 
-- <Non-goal 1>
+- Writing application code or scaffolding the frontend/backend.
+- Selecting architecture beyond the approved HLD.
+- Production deployment or database integration.
 
 ## Context & References
 
 ### Source Material
 
+- PRD: `../../../explore/prds/gym-scheduler-prd.md`
+- HLD: `../../../explore/hlds/gym-scheduler-hld.md`
+- Test Strategy: `../../../explore/explore-gym-scheduler/test-strategy.md`
+- DevOps Strategy: `../../../explore/explore-gym-scheduler/devops-strategy.md`
+- Risk Register: `../../../explore/explore-gym-scheduler/risks.md`
+- Glossary: `../../../explore/glossary.md`
+
 - <Source document> — <Relevance>
 
 ### Related Tasks
+
+- **Blocks**: downstream Govern epic/task planning
+- **Related**: architecture and strategy artifacts in `explore/`
 
 - **Blocks**: <tasks this blocks>
 - **Related**: <related tasks>
 
 ## Constraints & Dependencies
 
-- <Constraint or dependency>
+- Preserve JSON-only prototype storage and local-first delivery.
+- Use the approved GYM_SCHEDULER artifacts and this task workspace.
 
 ## Success Metrics
+
+- Four or fewer coherent epics cover all in-scope requirements.
+- No epic exceeds 15 proposed implementation tasks.
+- All epic boundaries and Govern readiness checks pass.
+
+## Completion Note
+
+Epic formation passed capability analysis, pattern analysis, placement review, epoch formation, boundary validation, indexing, link validation, and Govern readiness. The four epics are ready for Govern planning.
 
 - <How success will be measured>
 
