@@ -2,7 +2,7 @@
 [metadata]
 task_id = "GYM0001"
 title   = "Form GYM_SCHEDULER delivery epics"
-status  = "01-pending-planning"
+status  = "02-planning"
 
 [sources]
 epic      = "../../../explore/prds/gym-scheduler-prd.md"
@@ -16,12 +16,12 @@ child   = []
 
 [workflow]
 defined = "2026-09-09"
-planned = ""
+planned = "2026-09-09"
 implemented = ""
 
 [assignments]
 definition     = ""
-planning       = ""
+planning       = "anton-calin.stroia@endava.com"
 implementation = ""
 +++
 
