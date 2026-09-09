@@ -2,7 +2,7 @@
 [metadata]
 task_id = "GYM0001"
 title   = "Form GYM_SCHEDULER delivery epics"
-status  = "02-planning"
+status  = "06-completed"
 
 [sources]
 epic      = "../../../explore/prds/gym-scheduler-prd.md"
