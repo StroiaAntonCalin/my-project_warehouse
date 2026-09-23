@@ -27,7 +27,27 @@ h2 { margin: 16px 0; font-size: 1.5rem; }
 .exercise-add input { min-width: 0; width: 100%; padding: 10px; }
 .exercise-add button { padding: 9px 13px; }
 .remove { padding: 0 7px; color: #ff9f8d; background: transparent; font-size: 1.1rem; }
+.chat-panel { position: fixed; left: 24px; bottom: 24px; z-index: 10; width: min(420px, calc(100vw - 48px)); max-width: none; margin-top: 0; padding: 24px; border: 1px solid #343a34; border-radius: 20px; background: #202520; box-shadow: 0 16px 40px rgba(0, 0, 0, .28); }
+.chat-collapsed { padding: 10px; }
+.chat-toggle { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px; color: #f7f4ed; background: transparent; border-radius: 14px; text-align: left; }
+.chat-toggle:hover { background: #2b322b; }
+.chat-toggle span:first-child { display: grid; gap: 5px; }
+.chat-toggle .eyebrow { margin: 0; }
+.chat-toggle strong { font-size: 1.15rem; }
+.chat-toggle-icon { color: #b3d64b; font-size: 1.7rem; line-height: 1; }
+.chat-panel:not(.chat-collapsed) .chat-heading { cursor: pointer; }
+.chat-panel:not(.chat-collapsed) .chat-heading::after { content: '−'; color: #b3d64b; font-size: 1.7rem; line-height: 1; margin-left: auto; }
+.chat-heading { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
+.chat-heading h2 { margin: 6px 0 0; }
+.chat-heading .eyebrow { margin: 0; }
+.chat-status { color: #b3d64b; font-size: .75rem; }
+.chat-messages { display: grid; gap: 10px; max-height: 240px; overflow: auto; margin: 20px 0; }
+.chat-message { max-width: 85%; margin: 0; padding: 11px 14px; border-radius: 14px; line-height: 1.45; font-size: .9rem; }
+.chat-message.assistant { justify-self: start; color: #dfe5d8; background: #2b322b; }
+.chat-message.user { justify-self: end; color: #171a18; background: #b3d64b; }
+.chat-form { display: flex; gap: 8px; }
+.chat-form input { min-width: 0; width: 100%; }
 button { border: 0; border-radius: 999px; padding: 11px 15px; color: #171a18; background: #b3d64b; font-weight: 800; cursor: pointer; }
 button:hover { background: #c9eb62; }
 @media (max-width: 900px) { .board { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 520px) { .shell { padding: 40px 20px; } .board { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .shell { padding: 40px 20px; } .board { grid-template-columns: 1fr; } .chat-panel { left: 16px; bottom: 16px; width: calc(100vw - 32px); } }

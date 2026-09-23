@@ -2,7 +2,7 @@ export type Role = 'member' | 'admin';
 export type Difficulty = 'beginner' | 'intermediate' | 'advanced';
 export type DayOfWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
 
-export interface User { id: string; username: string; role: Role; passwordHash: string; }
+export interface User { id: string; username: string; role: Role; password: string; }
 export interface Exercise {
   id: string;
   name: string;
