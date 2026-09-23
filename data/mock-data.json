@@ -4,7 +4,13 @@
       "id": "user-demo",
       "username": "demo@gym.local",
       "role": "member",
-      "passwordHash": "prototype-only"
+      "password": "demo123"
+    },
+    {
+      "id": "user-1788954973539",
+      "username": "alex@gym.local",
+      "password": "alex1234",
+      "role": "member"
     }
   ],
   "schedules": [
@@ -16,13 +22,7 @@
           "id": "day-mon",
           "dayOfWeek": "monday",
           "order": 1,
-          "exercises": [
-            {
-              "name": "Squat",
-              "id": "exercise-1788952531514",
-              "order": 1
-            }
-          ]
+          "exercises": []
         },
         {
           "id": "day-tue",
@@ -36,8 +36,8 @@
           "order": 3,
           "exercises": [
             {
-              "name": "Leg Press",
-              "id": "exercise-1788952596243",
+              "name": "legpress",
+              "id": "exercise-1789475452707",
               "order": 1
             }
           ]
@@ -62,6 +62,66 @@
         },
         {
           "id": "day-sun",
+          "dayOfWeek": "sunday",
+          "order": 7,
+          "exercises": []
+        }
+      ]
+    },
+    {
+      "id": "schedule-user-1788954973539",
+      "userId": "user-1788954973539",
+      "days": [
+        {
+          "id": "day-user-1788954973539-1",
+          "dayOfWeek": "monday",
+          "order": 1,
+          "exercises": [
+            {
+              "name": "push",
+              "id": "exercise-1788954977826",
+              "order": 1
+            }
+          ]
+        },
+        {
+          "id": "day-user-1788954973539-2",
+          "dayOfWeek": "tuesday",
+          "order": 2,
+          "exercises": []
+        },
+        {
+          "id": "day-user-1788954973539-3",
+          "dayOfWeek": "wednesday",
+          "order": 3,
+          "exercises": []
+        },
+        {
+          "id": "day-user-1788954973539-4",
+          "dayOfWeek": "thursday",
+          "order": 4,
+          "exercises": [
+            {
+              "name": "pushday",
+              "id": "exercise-1789476119892",
+              "order": 1
+            }
+          ]
+        },
+        {
+          "id": "day-user-1788954973539-5",
+          "dayOfWeek": "friday",
+          "order": 5,
+          "exercises": []
+        },
+        {
+          "id": "day-user-1788954973539-6",
+          "dayOfWeek": "saturday",
+          "order": 6,
+          "exercises": []
+        },
+        {
+          "id": "day-user-1788954973539-7",
           "dayOfWeek": "sunday",
           "order": 7,
           "exercises": []

@@ -26,8 +26,9 @@ export class JsonRepository {
   scheduleCount() { return this.data.schedules.length; }
   findUser(username: string) { return this.data.users.find((user) => user.username === username); }
   findUserById(id: string) { return this.data.users.find((user) => user.id === id); }
-  createUser(username: string, passwordHash: string) {
-    const user = { id: `user-${Date.now()}`, username, passwordHash, role: 'member' as const };
+  listUsers() { return this.data.users.map(({ id, username, role }) => ({ id, username, role })); }
+  createUser(username: string, password: string) {
+    const user = { id: `user-${Date.now()}`, username, password, role: 'member' as const };
     this.data.users.push(user);
     const weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
     this.data.schedules.push({ id: `schedule-${user.id}`, userId: user.id, days: weekdays.map((dayOfWeek, index) => ({ id: `day-${user.id}-${index + 1}`, dayOfWeek, order: index + 1, exercises: [] })) as never });

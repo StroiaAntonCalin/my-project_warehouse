@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { createHash, randomBytes, scryptSync, timingSafeEqual } from 'node:crypto';
+import { createHash, randomBytes } from 'node:crypto';
 import { ConflictException, BadRequestException } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 import type { User } from '@gym-scheduler/contracts';
@@ -17,7 +17,7 @@ export class AuthService {
 
   login(username: string, password: string) {
     const user = this.repository.findUser(username);
-    if (!user || !this.passwordMatches(user.passwordHash, password, user.passwordHash === 'prototype-only' ? 'demo123' : undefined)) throw new UnauthorizedException('Invalid credentials');
+    if (!user || user.password !== password) throw new UnauthorizedException('Invalid credentials');
     return this.issueSession(user);
   }
 
@@ -25,7 +25,7 @@ export class AuthService {
     const normalized = username.trim().toLowerCase();
     if (!normalized.includes('@') || password.length < 6) throw new BadRequestException('Use a valid email and a password of at least 6 characters');
     if (this.repository.findUser(normalized)) throw new ConflictException('A user with this email already exists');
-    const user = this.repository.createUser(normalized, this.hashPassword(password));
+    const user = this.repository.createUser(normalized, password);
     return this.issueSession(user);
   }
 
@@ -58,10 +58,4 @@ export class AuthService {
   }
 
   private hash(value: string) { return createHash('sha256').update(value).digest('hex'); }
-  private hashPassword(password: string) { const salt = randomBytes(16).toString('hex'); return `${salt}:${scryptSync(password, salt, 64).toString('hex')}`; }
-  private passwordMatches(stored: string, password: string, prototypePassword?: string) {
-    if (prototypePassword) return password === prototypePassword;
-    const [salt, expected] = stored.split(':'); if (!salt || !expected) return false;
-    const actual = scryptSync(password, salt, 64); return timingSafeEqual(actual, Buffer.from(expected, 'hex'));
-  }
 }

@@ -2,8 +2,10 @@ import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
+import { openAiEnvironmentStatus } from './config/environment';
 
 async function bootstrap() {
+  console.log('[config] OpenAI environment:', openAiEnvironmentStatus());
   const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
   app.setGlobalPrefix('api/v1');
