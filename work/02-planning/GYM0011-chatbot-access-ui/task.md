@@ -2,7 +2,7 @@
 [metadata]
 task_id = "GYM0011"
 title = "Implement chatbot demo-access frontend experience"
-status = "01-pending-planning"
+status = "02-planning"
 type = "implementation"
 
 [sources]
@@ -14,6 +14,18 @@ blocks = ["GYM0010", "GYM0009"]
 related = ["GYM0004"]
 parent = []
 child = []
+
+[workflow]
+planned         = "2026-10-23"
+spec_complete   = ""
+implemented     = ""
+impl_complete   = ""
+completed       = ""
+
+[assignments]
+planning       = "anton-calin.stroia@endava.com"
+implementation = ""
+completed      = ""
 +++
 
 # Chatbot demo-access frontend experience
