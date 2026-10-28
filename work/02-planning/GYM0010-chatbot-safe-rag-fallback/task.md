@@ -2,7 +2,7 @@
 [metadata]
 task_id = "GYM0010"
 title = "Implement safe chatbot orchestration and local fallback"
-status = "01-pending-planning"
+status = "02-planning"
 type = "implementation"
 
 [sources]
@@ -14,6 +14,18 @@ blocks = ["GYM0008"]
 related = ["GYM0009"]
 parent = []
 child = []
+
+[workflow]
+planned         = "2026-10-28"
+spec_complete   = ""
+implemented     = ""
+impl_complete   = ""
+completed       = ""
+
+[assignments]
+planning       = "anton-calin.stroia@endava.com"
+implementation = ""
+completed      = ""
 +++
 
 # Safe chatbot orchestration and local fallback
