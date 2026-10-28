@@ -2,18 +2,37 @@
 [metadata]
 task_id = "GYM0010"
 title = "Implement safe chatbot orchestration and local fallback"
-status = "01-pending-planning"
+status = "02-planning"
 type = "implementation"
 
 [sources]
 epic = "../../../explore/epics/EPIC-GYM-005-chatbot-account-access.md"
-documents = ["../../../explore/prds/chatbot-account-access-prd.md", "../../../explore/explore-chatbot-account-access/test-strategy.md", "../../../explore/hlds/chatbot-account-access-design-sketch.md"]
+documents = [
+    "../../../explore/prds/chatbot-account-access-prd.md",
+    "../../../explore/explore-chatbot-account-access/test-strategy.md",
+    "../../../explore/hlds/chatbot-account-access-design-sketch.md",
+    "../../../explore/hlds/chatbot-account-access-decision-log.md",
+    "../../../explore/decisions/gym-scheduler-adr-004-secure-session.md",
+    "../../../apps/api/test/chat.spec.ts"
+]
 
 [links]
 blocks = ["GYM0008"]
-related = ["GYM0009"]
+related = ["GYM0009", "GYM0011", "GYM0012"]
 parent = []
 child = []
+
+[workflow]
+planned         = "2026-10-28"
+spec_complete   = ""
+implemented     = ""
+impl_complete   = ""
+completed       = ""
+
+[assignments]
+planning       = "anton-calin.stroia@endava.com"
+implementation = ""
+completed      = ""
 +++
 
 # Safe chatbot orchestration and local fallback
