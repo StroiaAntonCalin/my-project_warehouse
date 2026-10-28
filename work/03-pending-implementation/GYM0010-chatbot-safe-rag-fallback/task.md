@@ -2,7 +2,7 @@
 [metadata]
 task_id = "GYM0010"
 title = "Implement safe chatbot orchestration and local fallback"
-status = "02-planning"
+status = "03-pending-implementation"
 type = "implementation"
 
 [sources]
@@ -24,7 +24,7 @@ child = []
 
 [workflow]
 planned         = "2026-10-28"
-spec_complete   = ""
+spec_complete   = "2026-10-28"
 implemented     = ""
 impl_complete   = ""
 completed       = ""
