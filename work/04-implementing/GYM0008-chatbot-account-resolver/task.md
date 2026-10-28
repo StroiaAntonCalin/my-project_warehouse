@@ -2,7 +2,7 @@
 [metadata]
 task_id = "GYM0008"
 title = "Implement deterministic chatbot account resolver"
-status = "03-pending-implementation"
+status = "04-implementing"
 type = "implementation"
 
 [sources]
@@ -24,13 +24,13 @@ child = []
 [workflow]
 planned         = "2026-10-28"
 spec_complete   = "2026-10-28"
-implemented     = ""
+implemented     = "2026-10-28"
 impl_complete   = ""
 completed       = ""
 
 [assignments]
 planning       = "anton-calin.stroia@endava.com"
-implementation = ""
+implementation = "anton-calin.stroia@endava.com"
 completed      = ""
 +++
 
