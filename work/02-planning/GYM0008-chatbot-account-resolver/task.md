@@ -2,7 +2,7 @@
 [metadata]
 task_id = "GYM0008"
 title = "Implement deterministic chatbot account resolver"
-status = "01-pending-planning"
+status = "02-planning"
 type = "implementation"
 
 [sources]
@@ -14,6 +14,18 @@ blocks = []
 related = ["GYM0007", "GYM0003", "GYM0006"]
 parent = []
 child = []
+
+[workflow]
+planned         = "2026-10-28"
+spec_complete   = ""
+implemented     = ""
+impl_complete   = ""
+completed       = ""
+
+[assignments]
+planning       = "anton-calin.stroia@endava.com"
+implementation = ""
+completed      = ""
 +++
 
 # Deterministic chatbot account resolver
