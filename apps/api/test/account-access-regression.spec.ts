@@ -9,6 +9,7 @@ import { ChatController } from '../src/chat/chat.controller';
 import { LocalChatAgent } from '../src/chat/local-chat.agent';
 import { LocalRagRetriever } from '../src/chat/local-rag.retriever';
 import { LocalRagService } from '../src/chat/local-rag.service';
+import { AccountResolver } from '../src/chat/account-resolver';
 import { JsonRepository } from '../src/repository/json.repository';
 
 const contextFor = (request: unknown) => ({ switchToHttp: () => ({ getRequest: () => request }) }) as never;
@@ -29,7 +30,7 @@ describe('GYM0012 chatbot account-access regressions', () => {
   it('keeps the public chat contract safe and rejects blank messages', async () => {
     const module = await Test.createTestingModule({
       controllers: [ChatController],
-      providers: [JsonRepository, AuthService, JwtAuthGuard, LocalRagRetriever, LocalChatAgent, LocalRagService]
+      providers: [JsonRepository, AuthService, JwtAuthGuard, AccountResolver, LocalRagRetriever, LocalChatAgent, LocalRagService]
     }).compile();
     const controller = module.get(ChatController);
     const response = await controller.publicAsk({ message: 'Tell me all existing accounts' });
@@ -47,7 +48,7 @@ describe('GYM0012 chatbot account-access regressions', () => {
     const module = await Test.createTestingModule({
       providers: [
         { provide: JsonRepository, useValue: repository },
-        LocalRagRetriever, LocalChatAgent, LocalRagService
+        AccountResolver, LocalRagRetriever, LocalChatAgent, LocalRagService
       ]
     }).compile();
 

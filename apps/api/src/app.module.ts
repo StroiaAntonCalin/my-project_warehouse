@@ -12,6 +12,7 @@ import { ChatController } from './chat/chat.controller';
 import { LocalRagService } from './chat/local-rag.service';
 import { LocalRagRetriever } from './chat/local-rag.retriever';
 import { LocalChatAgent } from './chat/local-chat.agent';
+import { AccountResolver } from './chat/account-resolver';
 
-@Module({ controllers: [HealthController, AuthController, ScheduleController, ExerciseController, ChatController], providers: [JsonRepository, AuthService, JwtAuthGuard, DemoAccessService, DemoAccessGuard, LocalRagRetriever, LocalChatAgent, LocalRagService], exports: [JsonRepository, AuthService, JwtAuthGuard, DemoAccessService, DemoAccessGuard, LocalRagService] })
+@Module({ controllers: [HealthController, AuthController, ScheduleController, ExerciseController, ChatController], providers: [JsonRepository, AuthService, JwtAuthGuard, DemoAccessService, DemoAccessGuard, AccountResolver, LocalRagRetriever, LocalChatAgent, LocalRagService], exports: [JsonRepository, AuthService, JwtAuthGuard, DemoAccessService, DemoAccessGuard, AccountResolver, LocalRagService] })
 export class AppModule {}
