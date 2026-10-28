@@ -1,23 +1,37 @@
-import { FormEvent, StrictMode, useEffect, useState } from 'react';
+import { FormEvent, StrictMode, useId, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import type { Schedule } from '@gym-scheduler/contracts';
+import { errorChatResponse, normalizeChatResponse, type ChatMessage } from './chat';
 import './styles.css';
 
 let accessToken: string | undefined;
 const api = 'http://localhost:3000/api/v1';
-type ChatMessage = { role: 'user' | 'assistant'; text: string };
 
 function ChatPanel({ messages, input, loading, title, placeholder, onInput, onSubmit, label }: { messages: ChatMessage[]; input: string; loading: boolean; title: string; placeholder: string; onInput: (value: string) => void; onSubmit: (event: FormEvent) => void; label: string }) {
   const [open, setOpen] = useState(false);
-  useEffect(() => {
-    const retract = (event: MouseEvent) => {
-      if ((event.target as HTMLElement).closest('.chat-heading')) setOpen(false);
-    };
-    document.addEventListener('click', retract);
-    return () => document.removeEventListener('click', retract);
-  }, []);
-  if (!open) return <section className="chat-panel chat-collapsed" aria-label={label}><button className="chat-toggle" type="button" aria-expanded="false" onClick={() => setOpen(true)}><span><span className="eyebrow">LOCAL RAG ASSISTANT</span><strong>{title}</strong></span><span className="chat-toggle-icon" aria-hidden="true">+</span></button></section>;
-  return <section className="chat-panel" aria-label={label}><div className="chat-heading"><div><p className="eyebrow">LOCAL RAG ASSISTANT</p><h2>{title}</h2></div><span className="chat-status">JSON knowledge</span></div><div className="chat-messages">{messages.map((message, index) => <p className={`chat-message ${message.role}`} key={`${message.role}-${index}`}>{message.text}</p>)}</div><form className="chat-form" onSubmit={onSubmit}><input aria-label={label} placeholder={placeholder} value={input} onChange={(event) => onInput(event.target.value)} /><button type="submit" disabled={loading}>{loading ? '…' : 'Ask'}</button></form></section>;
+  const panelId = useId();
+  const contentId = panelId + '-content';
+  const headingId = panelId + '-heading';
+  return <section className={open ? 'chat-panel' : 'chat-panel chat-collapsed'} aria-label={label}>
+    <button id={headingId} className="chat-heading" type="button" aria-expanded={open} aria-controls={contentId} onClick={() => setOpen((current) => !current)}>
+      <span><span className="eyebrow">LOCAL RAG ASSISTANT</span><strong>{title}</strong></span>
+      <span className="chat-toggle-icon" aria-hidden="true">{open ? '−' : '+'}</span>
+    </button>
+    <div id={contentId} className="chat-content" role="region" aria-labelledby={headingId} hidden={!open}>
+      <div className="chat-status" role="status">JSON knowledge</div>
+      <div className="chat-messages" aria-live="polite">{messages.map((message, index) => <div className={'chat-message ' + message.role} key={message.role + '-' + index}>
+        <p>{message.text}</p>
+        {message.response?.accessIssued && <p className="chat-warning" role="status">Demo access only — local prototype; do not use real accounts.</p>}
+        {message.response?.accountUsername && <p className="chat-metadata">Account: {message.response.accountUsername}</p>}
+        {message.response?.mode === 'fallback' && <p className="chat-metadata">Local fallback response</p>}
+        {message.response?.mode === 'error' && <p className="chat-error" role="alert">The chatbot could not complete that request.</p>}
+      </div>)}</div>
+      <form className="chat-form" onSubmit={onSubmit}>
+        <input aria-label={label} placeholder={placeholder} value={input} onChange={(event) => onInput(event.target.value)} />
+        <button type="submit" disabled={loading}>{loading ? '...' : 'Ask'}</button>
+      </form>
+    </div>
+  </section>;
 }
 
 function App() {
@@ -30,8 +44,8 @@ function App() {
   async function logout() { await fetch(`${api}/auth/logout`, { method: 'POST', credentials: 'include' }); accessToken = undefined; setSchedule(null); }
   async function addExercise(dayOrder: number) { const name = drafts[dayOrder]?.trim(); if (!name || !accessToken) return; const response = await fetch(`${api}/schedules/me/days/${dayOrder}/exercises`, { method: 'POST', credentials: 'include', headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ name }) }); if (!response.ok) { setError('Could not add exercise'); return; } const exercise = await response.json(); setSchedule((current) => { if (!current) return current; const days = current.days.map((day) => day.order === dayOrder ? { ...day, exercises: [...day.exercises, exercise] } : day) as Schedule['days']; return { ...current, days }; }); setDrafts((current) => ({ ...current, [dayOrder]: '' })); }
   async function removeExercise(dayOrder: number, exerciseId: string) { if (!accessToken) return; await fetch(`${api}/schedules/me/days/${dayOrder}/exercises/${exerciseId}`, { method: 'DELETE', credentials: 'include', headers: { Authorization: `Bearer ${accessToken}` } }); setSchedule((current) => { if (!current) return current; const days = current.days.map((day) => day.order === dayOrder ? { ...day, exercises: day.exercises.filter((exercise) => exercise.id !== exerciseId).map((exercise, index) => ({ ...exercise, order: index + 1 })) } : day) as Schedule['days']; return { ...current, days }; }); }
-  async function askChat(event: FormEvent) { event.preventDefault(); const message = chatInput.trim(); if (!message || !accessToken) return; setChatInput(''); setChatMessages((current) => [...current, { role: 'user', text: message }]); setChatLoading(true); try { const response = await fetch(`${api}/chat`, { method: 'POST', credentials: 'include', headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ message }) }); const payload = await response.json(); if (!response.ok) throw new Error(payload.message ?? 'Chat request failed'); setChatMessages((current) => [...current, { role: 'assistant', text: payload.answer }]); } catch (caught) { setChatMessages((current) => [...current, { role: 'assistant', text: caught instanceof Error ? caught.message : 'Chat request failed' }]); } finally { setChatLoading(false); } }
-  async function askPublicChat(event: FormEvent) { event.preventDefault(); const message = publicChatInput.trim(); if (!message) return; setPublicChatInput(''); setPublicChatMessages((current) => [...current, { role: 'user', text: message }]); setPublicChatLoading(true); try { const response = await fetch(`${api}/chat/public`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message }) }); const payload = await response.json(); if (!response.ok) throw new Error(payload.message ?? 'Chat request failed'); setPublicChatMessages((current) => [...current, { role: 'assistant', text: payload.answer }]); } catch (caught) { setPublicChatMessages((current) => [...current, { role: 'assistant', text: caught instanceof Error ? caught.message : 'Chat request failed' }]); } finally { setPublicChatLoading(false); } }
+  async function askChat(event: FormEvent) { event.preventDefault(); const message = chatInput.trim(); if (!message || !accessToken) return; setChatInput(''); setChatMessages((current) => [...current, { role: 'user', text: message }]); setChatLoading(true); try { const response = await fetch(`${api}/chat`, { method: 'POST', credentials: 'include', headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ message }) }); const payload = await response.json(); if (!response.ok) throw new Error('Chat request failed'); const chatResponse = normalizeChatResponse(payload); setChatMessages((current) => [...current, { role: 'assistant', text: chatResponse.answer, response: chatResponse }]); } catch { const chatResponse = errorChatResponse(); setChatMessages((current) => [...current, { role: 'assistant', text: chatResponse.answer, response: chatResponse }]); } finally { setChatLoading(false); } }
+  async function askPublicChat(event: FormEvent) { event.preventDefault(); const message = publicChatInput.trim(); if (!message) return; setPublicChatInput(''); setPublicChatMessages((current) => [...current, { role: 'user', text: message }]); setPublicChatLoading(true); try { const response = await fetch(`${api}/chat/public`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message }) }); const payload = await response.json(); if (!response.ok) throw new Error('Chat request failed'); const chatResponse = normalizeChatResponse(payload); setPublicChatMessages((current) => [...current, { role: 'assistant', text: chatResponse.answer, response: chatResponse }]); } catch { const chatResponse = errorChatResponse(); setPublicChatMessages((current) => [...current, { role: 'assistant', text: chatResponse.answer, response: chatResponse }]); } finally { setPublicChatLoading(false); } }
 
   if (!schedule) return <main className="shell auth-shell"><header><p className="eyebrow">GYM_SCHEDULER</p><h1>{isRegistering ? 'Start your strongest week.' : 'Plan your strongest week.'}</h1><p className="intro">{isRegistering ? 'Create an account and get your personal seven-day schedule.' : 'Sign in to open your personal seven-day schedule.'}</p></header><form className="login-form" onSubmit={login}><label>Email<input type="email" required value={username} onChange={(event) => setUsername(event.target.value)} /></label><label>Password<div className="password-field"><input type={showPassword ? 'text' : 'password'} required value={password} onChange={(event) => setPassword(event.target.value)} /><button className="show-password" type="button" onClick={() => setShowPassword((current) => !current)}>{showPassword ? 'Hide' : 'Show'}</button></div></label>{isRegistering && <label>Confirm password<div className="password-field"><input type={showConfirmPassword ? 'text' : 'password'} required value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} /><button className="show-password" type="button" onClick={() => setShowConfirmPassword((current) => !current)}>{showConfirmPassword ? 'Hide' : 'Show'}</button></div></label>}{error && <p className="error" role="alert">{error}</p>}<button type="submit" disabled={loading}>{loading ? 'Please wait…' : isRegistering ? 'Create account' : 'Open schedule'}</button><button className="logout" type="button" onClick={() => { setIsRegistering((current) => !current); setError(''); }}>{isRegistering ? 'Already have an account? Sign in' : 'New here? Create an account'}</button></form><ChatPanel messages={publicChatMessages} input={publicChatInput} loading={publicChatLoading} title="Ask before you sign in" placeholder="e.g. Tell me about the accounts" onInput={setPublicChatInput} onSubmit={askPublicChat} label="Public gym assistant" /></main>;
 
