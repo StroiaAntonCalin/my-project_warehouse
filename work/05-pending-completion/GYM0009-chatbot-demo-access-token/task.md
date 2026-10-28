@@ -2,7 +2,7 @@
 [metadata]
 task_id = "GYM0009"
 title = "Implement isolated chatbot demo-access token"
-status = "04-implementing"
+status = "05-pending-completion"
 type = "implementation"
 
 [sources]
@@ -27,7 +27,7 @@ child = []
 planned         = "2026-10-28"
 spec_complete   = "2026-10-28"
 implemented     = "2026-10-28"
-impl_complete   = ""
+impl_complete   = "2026-10-28"
 completed       = ""
 
 [assignments]
