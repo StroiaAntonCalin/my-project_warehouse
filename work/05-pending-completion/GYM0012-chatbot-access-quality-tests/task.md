@@ -2,7 +2,7 @@
 [metadata]
 task_id = "GYM0012"
 title = "Add chatbot account-access quality and regression tests"
-status = "04-implementing"
+status = "05-pending-completion"
 type = "implementation"
 
 [sources]
@@ -26,7 +26,7 @@ child = []
 planned         = "2026-10-23"
 spec_complete   = "2026-10-23"
 implemented     = "2026-10-28"
-impl_complete   = ""
+impl_complete   = "2026-10-28"
 completed       = ""
 
 [assignments]

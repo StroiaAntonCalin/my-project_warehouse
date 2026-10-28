@@ -2,18 +2,36 @@
 [metadata]
 task_id = "GYM0008"
 title = "Implement deterministic chatbot account resolver"
-status = "01-pending-planning"
+status = "02-planning"
 type = "implementation"
 
 [sources]
 epic = "../../../explore/epics/EPIC-GYM-005-chatbot-account-access.md"
-documents = ["../../../explore/prds/chatbot-account-access-prd.md", "../../../explore/hlds/chatbot-account-access-design-sketch.md"]
+documents = [
+    "../../../explore/prds/chatbot-account-access-prd.md",
+    "../../../explore/hlds/chatbot-account-access-design-sketch.md",
+    "../../../explore/hlds/chatbot-account-access-decision-log.md",
+    "../../../apps/api/src/repository/json.repository.ts",
+    "../../../apps/api/src/auth/demo-access.service.ts"
+]
 
 [links]
-blocks = []
-related = ["GYM0007", "GYM0003", "GYM0006"]
+blocks = ["GYM0009", "GYM0010"]
+related = ["GYM0007", "GYM0003", "GYM0006", "GYM0012"]
 parent = []
 child = []
+
+[workflow]
+planned         = "2026-10-28"
+spec_complete   = ""
+implemented     = ""
+impl_complete   = ""
+completed       = ""
+
+[assignments]
+planning       = "anton-calin.stroia@endava.com"
+implementation = ""
+completed      = ""
 +++
 
 # Deterministic chatbot account resolver
