@@ -1,4 +1,5 @@
 import { Test } from '@nestjs/testing';
+import * as jwt from 'jsonwebtoken';
 import { AuthService } from '../src/auth/auth.service';
 import { JsonRepository } from '../src/repository/json.repository';
 
@@ -20,5 +21,12 @@ describe('AuthService', () => {
     const second = auth.refresh(first.refreshToken);
     expect(second.refreshToken).not.toBe(first.refreshToken);
     expect(() => auth.refresh(first.refreshToken)).toThrow('Invalid refresh token');
+  });
+
+  it('rejects a demo-shaped token from the normal access-token verifier', () => {
+    const token = jwt.sign({ sub: 'user-1', role: 'demo_member', demo: true }, process.env.JWT_SECRET ?? 'gym-scheduler-local-development-secret', {
+      header: { typ: 'demo_access', alg: 'HS256' }
+    });
+    expect(() => auth.verifyAccessToken(token)).toThrow('Invalid access token');
   });
 });
