@@ -2,7 +2,7 @@
 [metadata]
 task_id = "GYM0009"
 title = "Implement isolated chatbot demo-access token"
-status = "02-planning"
+status = "04-implementing"
 type = "implementation"
 
 [sources]
@@ -25,14 +25,14 @@ child = []
 
 [workflow]
 planned         = "2026-10-28"
-spec_complete   = ""
-implemented     = ""
+spec_complete   = "2026-10-28"
+implemented     = "2026-10-28"
 impl_complete   = ""
 completed       = ""
 
 [assignments]
 planning       = "anton-calin.stroia@endava.com"
-implementation = ""
+implementation = "anton-calin.stroia@endava.com"
 completed      = ""
 +++
 

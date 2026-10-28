@@ -46,7 +46,13 @@ export class AuthService {
   logout(token: string | undefined) { if (token) this.sessions.delete(this.hash(token)); }
 
   verifyAccessToken(token: string) {
-    try { return jwt.verify(token, this.secret) as { sub: string; role: string }; }
+    try {
+      const decoded = jwt.decode(token, { complete: true });
+      if (decoded && typeof decoded !== 'string' && decoded.header.typ === 'demo_access') {
+        throw new Error('Demo token is not a normal access token');
+      }
+      return jwt.verify(token, this.secret) as { sub: string; role: string };
+    }
     catch { throw new UnauthorizedException('Invalid access token'); }
   }
 
