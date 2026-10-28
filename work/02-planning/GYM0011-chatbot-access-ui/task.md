@@ -7,11 +7,17 @@ type = "implementation"
 
 [sources]
 epic = "../../../explore/epics/EPIC-GYM-005-chatbot-account-access.md"
-documents = ["../../../explore/prds/chatbot-account-access-prd.md", "../../../explore/explore-chatbot-account-access/test-strategy.md"]
+documents = [
+    "../../../explore/prds/chatbot-account-access-prd.md",
+    "../../../explore/explore-chatbot-account-access/test-strategy.md",
+    "../../../explore/hlds/chatbot-account-access-decision-log.md",
+    "../../../explore/design/accessibility-gym-scheduler.md",
+    "../../../explore/explore-gym-scheduler/test-strategy.md"
+]
 
 [links]
 blocks = ["GYM0010", "GYM0009"]
-related = ["GYM0004"]
+related = ["GYM0004", "GYM0010", "GYM0012"]
 parent = []
 child = []
 
