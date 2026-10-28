@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import type { Exercise, Schedule, User } from '@gym-scheduler/contracts';
 import { JsonRepository } from '../repository/json.repository';
+import { AccountResolver } from './account-resolver';
 import type { AccountResolution, ChatIntent } from './chat.types';
 
 export type KnowledgeDocument = { id: string; title: string; text: string; userId: string };
@@ -10,7 +11,7 @@ const stopWords = new Set(['a', 'an', 'and', 'are', 'can', 'do', 'for', 'from', 
 
 @Injectable()
 export class LocalRagRetriever {
-  constructor(private readonly repository: JsonRepository) {}
+  constructor(private readonly repository: JsonRepository, private readonly accountResolver: AccountResolver) {}
 
   retrieve(userId: string, question: string, publicScope = false, resolution?: AccountResolution): RetrievedContext {
     const intent = this.classify(question);
@@ -45,10 +46,7 @@ export class LocalRagRetriever {
   extractUsername(question: string) { return question.match(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i)?.[0]?.toLowerCase(); }
 
   resolveUsername(username: string): AccountResolution {
-    const matches = this.repository.snapshot().users.filter((user) => user.username.toLowerCase() === username.toLowerCase());
-    if (matches.length === 1) return { status: 'unique', userId: matches[0].id, username: matches[0].username };
-    if (matches.length > 1) return { status: 'ambiguous', username };
-    return { status: 'unknown', username };
+    return this.accountResolver.resolve(username);
   }
 
   private context(documents: KnowledgeDocument[], defaultScore?: number, scores?: number[]): RetrievedContext {
