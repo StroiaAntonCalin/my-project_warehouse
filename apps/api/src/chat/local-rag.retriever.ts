@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import type { Exercise, Schedule, User } from '@gym-scheduler/contracts';
 import { JsonRepository } from '../repository/json.repository';
+import type { AccountResolution, ChatIntent } from './chat.types';
 
 export type KnowledgeDocument = { id: string; title: string; text: string; userId: string };
 export type RetrievedContext = { documents: KnowledgeDocument[]; sources: { id: string; title: string; text: string; score: number }[] };
@@ -11,14 +12,20 @@ const stopWords = new Set(['a', 'an', 'and', 'are', 'can', 'do', 'for', 'from', 
 export class LocalRagRetriever {
   constructor(private readonly repository: JsonRepository) {}
 
-  retrieve(userId: string, question: string, publicScope = false): RetrievedContext {
-    const includeAll = this.isAccountQuestion(question);
+  retrieve(userId: string, question: string, publicScope = false, resolution?: AccountResolution): RetrievedContext {
+    const intent = this.classify(question);
     const requestedUser = this.extractUsername(question);
-    const credentialQuestion = /\b(password|passcode|email|credential|credentials)\b/i.test(question);
-    const documents = requestedUser
-      ? credentialQuestion ? this.accountDocuments().filter((document) => document.userId === this.repository.findUser(requestedUser)?.id) : this.userDocumentsByUsername(requestedUser)
-      : includeAll ? this.accountDocuments() : publicScope ? this.publicDocuments() : this.userDocuments(userId);
-    if ((includeAll && !requestedUser) || requestedUser) return this.context(documents, 1);
+    if (intent === 'unsupported') return this.context([]);
+
+    let documents: KnowledgeDocument[];
+    if (requestedUser) {
+      documents = resolution?.status === 'unique' ? this.userDocumentsById(resolution.userId) : [];
+    } else if (intent === 'account_lookup' || intent === 'access_request') {
+      documents = this.accountDocuments();
+    } else {
+      documents = publicScope ? this.publicDocuments() : this.userDocuments(userId);
+    }
+    if (requestedUser || intent === 'account_lookup' || intent === 'access_request') return this.context(documents, 1);
 
     const query = this.tokens(question);
     const scored = documents.map((document) => ({ document, score: this.score(query, `${document.title} ${document.text}`) }))
@@ -28,12 +35,28 @@ export class LocalRagRetriever {
     return this.context(ranked.map((item) => item.document), undefined, ranked.map((item) => item.score));
   }
 
+  classify(question: string): ChatIntent {
+    if (/\b(password|passcode|credential|credentials|log\s*in|login|sign\s*in|access|forgot)\b/i.test(question)) return 'access_request';
+    if (/\b(account|accounts|user|users|member|members|registered|email|username)\b/i.test(question)) return 'account_lookup';
+    if (/\b(exercise|exercises|workout|workouts|train|training|schedule|day|legpress|leg press)\b/i.test(question)) return 'schedule_lookup';
+    return 'unsupported';
+  }
+
+  extractUsername(question: string) { return question.match(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i)?.[0]?.toLowerCase(); }
+
+  resolveUsername(username: string): AccountResolution {
+    const matches = this.repository.snapshot().users.filter((user) => user.username.toLowerCase() === username.toLowerCase());
+    if (matches.length === 1) return { status: 'unique', userId: matches[0].id, username: matches[0].username };
+    if (matches.length > 1) return { status: 'ambiguous', username };
+    return { status: 'unknown', username };
+  }
+
   private context(documents: KnowledgeDocument[], defaultScore?: number, scores?: number[]): RetrievedContext {
     return { documents, sources: documents.map((document, index) => ({ ...document, score: scores?.[index] ?? defaultScore ?? 0 })) };
   }
 
   private accountDocuments(): KnowledgeDocument[] {
-    return this.repository.snapshot().users.map((user) => ({ id: `account:${user.id}`, title: 'Registered account', userId: user.id, text: `Account ${user.username} has role ${user.role} and password ${user.password}.` }));
+    return this.repository.snapshot().users.map((user) => ({ id: `account:${user.id}`, title: 'Registered account', userId: user.id, text: `Account ${user.username} has role ${user.role}.` }));
   }
 
   private publicDocuments(): KnowledgeDocument[] {
@@ -46,6 +69,10 @@ export class LocalRagRetriever {
   private userDocuments(userId: string): KnowledgeDocument[] {
     const user = this.repository.findUserById(userId);
     return user ? this.documentsForUser(user) : [];
+  }
+
+  private userDocumentsById(userId: string): KnowledgeDocument[] {
+    return this.userDocuments(userId);
   }
 
   private userDocumentsByUsername(username: string): KnowledgeDocument[] {
@@ -70,6 +97,4 @@ export class LocalRagRetriever {
 
   private tokens(value: string) { return [...new Set(value.toLowerCase().split(/[^a-z0-9]+/).filter((token) => token.length > 1 && !stopWords.has(token)))]; }
   private score(query: string[], text: string) { const words = new Set(this.tokens(text)); const compactText = text.toLowerCase().replace(/[^a-z0-9]/g, ''); return query.reduce((score, token) => score + (words.has(token) || compactText.includes(token) ? 1 : 0), 0); }
-  private isAccountQuestion(question: string) { return /\b(account|accounts|user|users|member|members|registered|password|passcode|email|credential|credentials)\b/i.test(question); }
-  private extractUsername(question: string) { return question.match(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i)?.[0]?.toLowerCase(); }
 }
