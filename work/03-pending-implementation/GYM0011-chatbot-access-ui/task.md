@@ -2,7 +2,7 @@
 [metadata]
 task_id = "GYM0011"
 title = "Implement chatbot demo-access frontend experience"
-status = "02-planning"
+status = "03-pending-implementation"
 type = "implementation"
 
 [sources]
@@ -23,7 +23,7 @@ child = []
 
 [workflow]
 planned         = "2026-10-23"
-spec_complete   = ""
+spec_complete   = "2026-10-28"
 implemented     = ""
 impl_complete   = ""
 completed       = ""
