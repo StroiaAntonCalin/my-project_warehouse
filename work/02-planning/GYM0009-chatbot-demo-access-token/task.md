@@ -2,18 +2,38 @@
 [metadata]
 task_id = "GYM0009"
 title = "Implement isolated chatbot demo-access token"
-status = "01-pending-planning"
+status = "02-planning"
 type = "implementation"
 
 [sources]
 epic = "../../../explore/epics/EPIC-GYM-005-chatbot-account-access.md"
-documents = ["../../../explore/prds/chatbot-account-access-prd.md", "../../../explore/hlds/chatbot-account-access-design-sketch.md", "../../../explore/hlds/chatbot-account-access-decision-log.md"]
+documents = [
+    "../../../explore/prds/chatbot-account-access-prd.md",
+    "../../../explore/hlds/chatbot-account-access-design-sketch.md",
+    "../../../explore/hlds/chatbot-account-access-decision-log.md",
+    "../../../explore/decisions/gym-scheduler-adr-004-secure-session.md",
+    "../../../apps/api/src/auth/auth.service.ts",
+    "../../../apps/api/src/auth/jwt-auth.guard.ts",
+    "../../../apps/api/test/auth.spec.ts"
+]
 
 [links]
 blocks = ["GYM0008"]
-related = ["GYM0003"]
+related = ["GYM0003", "GYM0010", "GYM0011", "GYM0012"]
 parent = []
 child = []
+
+[workflow]
+planned         = "2026-10-28"
+spec_complete   = ""
+implemented     = ""
+impl_complete   = ""
+completed       = ""
+
+[assignments]
+planning       = "anton-calin.stroia@endava.com"
+implementation = ""
+completed      = ""
 +++
 
 # Isolated chatbot demo-access token
