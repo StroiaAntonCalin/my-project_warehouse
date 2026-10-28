@@ -2,7 +2,7 @@
 [metadata]
 task_id = "GYM0012"
 title = "Add chatbot account-access quality and regression tests"
-status = "03-pending-implementation"
+status = "04-implementing"
 type = "implementation"
 
 [sources]
@@ -25,13 +25,13 @@ child = []
 [workflow]
 planned         = "2026-10-23"
 spec_complete   = "2026-10-23"
-implemented     = ""
+implemented     = "2026-10-28"
 impl_complete   = ""
 completed       = ""
 
 [assignments]
 planning       = "anton-calin.stroia@endava.com"
-implementation = ""
+implementation = "anton-calin.stroia@endava.com"
 completed      = ""
 +++
 
