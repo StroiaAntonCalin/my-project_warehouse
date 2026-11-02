@@ -14,6 +14,8 @@ export type ChatResponse = {
   mode: 'answer' | 'fallback' | 'error';
   intent: ChatIntent;
   accountUsername?: string;
-  accessIssued: false;
+  accessIssued: boolean;
   demoOnly: true;
+  redirectTo?: string;
+  accessToken?: string;
 };

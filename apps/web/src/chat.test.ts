@@ -20,8 +20,14 @@ describe('chat response presentation contract', () => {
   it('normalizes malformed provider payloads to a safe answer', () => {
     expect(normalizeChatResponse({ answer: '', mode: 'unknown', apiKey: 'secret' })).toEqual({
       answer: "I couldn't generate a safe response. Please try again.", source: undefined, mode: undefined,
-      intent: undefined, accountUsername: undefined, accessIssued: undefined, demoOnly: undefined
+      intent: undefined, accountUsername: undefined, accessIssued: undefined, demoOnly: undefined, redirectTo: undefined
     });
+  });
+
+  it('keeps the schedule redirect metadata but never exposes the access token', () => {
+    const response = normalizeChatResponse({ answer: 'Opening the schedule.', redirectTo: '/schedule', accessIssued: true, accessToken: 'secret' });
+    expect(response.redirectTo).toBe('/schedule');
+    expect(response).not.toHaveProperty('accessToken');
   });
 
   it('creates a generic UI error response', () => {

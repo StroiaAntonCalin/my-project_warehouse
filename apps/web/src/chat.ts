@@ -9,6 +9,7 @@ export type ChatResponse = {
   accountUsername?: string;
   accessIssued?: boolean;
   demoOnly?: boolean;
+  redirectTo?: string;
 };
 
 export type ChatMessage = {
@@ -28,7 +29,8 @@ export function normalizeChatResponse(payload: unknown): ChatResponse {
   const accountUsername = typeof value.accountUsername === 'string' ? value.accountUsername : undefined;
   const accessIssued = typeof value.accessIssued === 'boolean' ? value.accessIssued : undefined;
   const demoOnly = typeof value.demoOnly === 'boolean' ? value.demoOnly : undefined;
-  return { answer, source, mode, intent, accountUsername, accessIssued, demoOnly };
+  const redirectTo = value.redirectTo === '/schedule' ? value.redirectTo : undefined;
+  return { answer, source, mode, intent, accountUsername, accessIssued, demoOnly, redirectTo };
 }
 
 export function errorChatResponse(): ChatResponse {

@@ -37,7 +37,8 @@ export class LocalRagRetriever {
   }
 
   classify(question: string): ChatIntent {
-    if (/\b(password|passcode|credential|credentials|log\s*in|login|sign\s*in|access|forgot)\b/i.test(question)) return 'access_request';
+    if (/\b(password|passcode|credential|credentials|log\s*in|login|sign\s*in|access|forgot)\b/i.test(question)
+      || /\b(open|show|view|go|take me to)\b.*\bschedule\b/i.test(question)) return 'access_request';
     if (/\b(account|accounts|user|users|member|members|registered|email|username)\b/i.test(question)) return 'account_lookup';
     if (/\b(exercise|exercises|workout|workouts|train|training|schedule|day|legpress|leg press)\b/i.test(question)) return 'schedule_lookup';
     return 'unsupported';
